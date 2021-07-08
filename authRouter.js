@@ -12,6 +12,7 @@ router.post(
       min: 6,
       max: 16,
     }),
+    check("password", "Password can not be empty").notEmpty(),
     check("password", "Password should be from 6 to 18 symbols").isLength({
       min: 6,
       max: 18,
@@ -19,7 +20,18 @@ router.post(
   ],
   controller.registration
 );
-router.post("/login", controller.login);
+router.post(
+  "/login",
+  [
+    check("emai;", "Email can not be empty").notEmpty(),
+    check("password", "Password can not be empty").notEmpty(),
+    check("password", "Password should be from 6 to 18 symbols").isLength({
+      min: 6,
+      max: 18,
+    }),
+  ],
+  controller.login
+);
 router.get("/users", roleMiddleWare(), controller.getUsers);
 
 module.exports = router;
