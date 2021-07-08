@@ -20,7 +20,8 @@ class authController {
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: "Registration error", errors });
       }
-      const { username, password, email } = req.body;
+      const { username, password, email, isAdmin } = req.body;
+      console.log("Userdata: ", { username, password, email, isAdmin });
       const candidate = await User.findOne({ username });
       if (candidate) {
         return res
@@ -28,7 +29,13 @@ class authController {
           .json({ message: "User with such name already exists" });
       }
       const hashPassword = bcrypt.hashSync(password, 6);
-      const userRole = await Role.findOne({ value: "USER" });
+
+      let userRole;
+      if (!isAdmin) {
+        userRole = await Role.findOne({ value: "USER" });
+      } else {
+        userRole = await Role.findOne({ value: "ADMIN" });
+      }
 
       const user = new User({
         username,

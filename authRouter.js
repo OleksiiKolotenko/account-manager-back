@@ -8,9 +8,13 @@ router.post(
   "/registration",
   [
     check("username", "Name can not be empty").notEmpty(),
-    check("username", "Password should be from 4 to 10 symbols").isLength({
-      min: 4,
-      max: 10,
+    check("username", "Username should be from 6 to 16 symbols").isLength({
+      min: 6,
+      max: 16,
+    }),
+    check("password", "Password should be from 6 to 18 symbols").isLength({
+      min: 6,
+      max: 18,
     }),
   ],
   controller.registration
