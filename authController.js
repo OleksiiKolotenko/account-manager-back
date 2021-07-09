@@ -15,6 +15,18 @@ const generateAccessToken = (email, username, roles) => {
 };
 
 class authController {
+  async me(req, res) {
+    try {
+      const token = req.get("token");
+      const user = jwt.decode(token);
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({
+        message: error,
+      });
+    }
+  }
+
   async registration(req, res) {
     try {
       const errors = validationResult(req);

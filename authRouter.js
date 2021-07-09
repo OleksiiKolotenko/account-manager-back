@@ -32,6 +32,7 @@ router.post(
   ],
   controller.login
 );
+router.get("/me", controller.me);
 router.get("/users", roleMiddleWare(), controller.getUsers);
 
 module.exports = router;
