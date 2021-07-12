@@ -18,7 +18,9 @@ class authController {
   async me(req, res) {
     try {
       const token = req.get("token");
+      console.log("Token: ", token);
       const user = jwt.decode(token);
+      console.log("User: ", user);
       res.json(user);
     } catch (error) {
       res.status(500).json({
@@ -73,6 +75,7 @@ class authController {
   }
   async login(req, res) {
     try {
+      console.log("login start");
       const { email, password } = req.body;
       const user = await User.findOne({ email });
       if (!user) {
@@ -85,6 +88,7 @@ class authController {
         return res.status(200).json({ message: `Wrong password` });
       }
       const token = generateAccessToken(user.email, user.username, user.roles);
+      console.log("token generated: ", token);
       return res.json({ token });
     } catch (event) {
       console.log(event);
