@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const { secret } = require("./config");
 
-const generateAccessToken = (email, username, roles) => {
+const generateAccessToken = (email, username, roles, id) => {
   const payload = {
     email,
     username,
