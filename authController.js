@@ -1,11 +1,12 @@
 const Role = require("./models/Role");
 const User = require("./models/User");
+const Profile = require("./models/Profiles");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const { secret } = require("./config");
 
-const generateAccessToken = (email, username, roles, id) => {
+const generateAccessToken = (email, username, roles) => {
   const payload = {
     email,
     username,
@@ -18,9 +19,7 @@ class authController {
   async me(req, res) {
     try {
       const token = req.get("token");
-      console.log("Token: ", token);
       const user = jwt.decode(token);
-      console.log("User: ", user);
       res.json(user);
     } catch (error) {
       res.status(500).json({
@@ -36,7 +35,6 @@ class authController {
         return res.status(400).json({ message: "Registration error", errors });
       }
       const { username, password, email, isAdmin } = req.body;
-      console.log("Userdata: ", { username, password, email, isAdmin });
       const candidate = await User.findOne({ username });
       if (candidate) {
         return res
@@ -99,6 +97,25 @@ class authController {
     try {
       const users = await User.find();
       res.json(users);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+  async profileLoad(req, res) {
+    try {
+      const token = req.get("token");
+      const user = jwt.decode(token);
+      console.log(req.body);
+      const { name, gender, birthdate, city } = req.body;
+      const profile = new Profile({
+        name,
+        gender,
+        birthdate,
+        city,
+        user_id: user.username,
+      });
+      await profile.save();
+      return res.json(profile);
     } catch (event) {
       console.log(event);
     }
