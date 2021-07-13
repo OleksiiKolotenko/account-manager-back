@@ -6,16 +6,17 @@ const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const { secret } = require("./config");
 
-const generateAccessToken = (email, username, roles) => {
+const generateAccessToken = (email, username, roles, _id) => {
   const payload = {
     email,
     username,
     roles,
+    id: _id,
   };
   return jwt.sign(payload, secret, { expiresIn: "24h" });
 };
 
-class authController {
+class mainController {
   async me(req, res) {
     try {
       const token = req.get("token");
@@ -36,6 +37,7 @@ class authController {
       }
       const { username, password, email, isAdmin } = req.body;
       const candidate = await User.findOne({ username });
+
       if (candidate) {
         return res
           .status(400)
@@ -56,15 +58,17 @@ class authController {
         password: hashPassword,
         roles: userRole.value,
       });
-
-      await user.save();
-      return res.json({
-        message: "User was registered",
-        user: {
-          username,
-          email,
-          roles: userRole.value,
-        },
+      await user.save((err, user) => {
+        const id = user._id;
+        return res.json({
+          message: "User was registered",
+          user: {
+            username,
+            email,
+            roles: userRole.value,
+            id: user._id,
+          },
+        });
       });
     } catch (event) {
       console.log(event);
@@ -73,7 +77,6 @@ class authController {
   }
   async login(req, res) {
     try {
-      console.log("login start");
       const { email, password } = req.body;
       const user = await User.findOne({ email });
       if (!user) {
@@ -83,10 +86,14 @@ class authController {
       }
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
-        return res.status(200).json({ message: `Wrong password` });
+        return res.status(200).json({ message: `Wrong password or email` });
       }
-      const token = generateAccessToken(user.email, user.username, user.roles);
-      console.log("token generated: ", token);
+      const token = generateAccessToken(
+        user.email,
+        user.username,
+        user.roles,
+        user._id
+      );
       return res.json({ token });
     } catch (event) {
       console.log(event);
@@ -105,14 +112,13 @@ class authController {
     try {
       const token = req.get("token");
       const user = jwt.decode(token);
-      console.log(req.body);
-      const { name, gender, birthdate, city } = req.body;
+      const { name, gender, birthdate, city, user_id } = req.body;
       const profile = new Profile({
         name,
         gender,
         birthdate,
         city,
-        user_id: user.username,
+        user_id: user.id,
       });
       await profile.save();
       return res.json(profile);
@@ -122,4 +128,4 @@ class authController {
   }
 }
 
-module.exports = new authController();
+module.exports = new mainController();
