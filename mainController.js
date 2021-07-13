@@ -79,11 +79,13 @@ class mainController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
+
       if (!user) {
         return res
           .status(200)
           .json({ message: `Email ${email} was not found in the base` });
       }
+
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
         return res.status(200).json({ message: `Wrong password or email` });
@@ -122,6 +124,23 @@ class mainController {
       });
       await profile.save();
       return res.json(profile);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+  async getProfiles(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const profiles = await Profile.find({ user_id: userId });
+      res.json(profiles);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+  async getAllProfiles(req, res) {
+    try {
+      const profiles = await Profile.find();
+      res.json(profiles);
     } catch (event) {
       console.log(event);
     }

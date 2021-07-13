@@ -23,7 +23,8 @@ router.post(
 router.post(
   "/login",
   [
-    check("emai;", "Email can not be empty").notEmpty(),
+    check("email", "Email can not be empty").notEmpty(),
+    check("email", "Email can not be empty").isEmail(),
     check("password", "Password can not be empty").notEmpty(),
     check("password", "Password should be from 6 to 18 symbols").isLength({
       min: 6,
@@ -33,6 +34,8 @@ router.post(
   controller.login
 );
 router.post("/profileLoad", controller.profileLoad);
+router.get("/getProfiles/:id", controller.getProfiles);
+router.get("/getAllProfiles/", controller.getAllProfiles);
 router.get("/me", controller.me);
 router.get("/users", roleMiddleWare(), controller.getUsers);
 
