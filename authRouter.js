@@ -33,10 +33,12 @@ router.post(
   ],
   controller.login
 );
+
+router.get("/adult", controller.getAdult);
 router.post("/profileLoad", controller.profileLoad);
 router.get("/getProfiles/:id", controller.getProfiles);
 router.get("/getAllProfiles/", controller.getAllProfiles);
 router.get("/me", controller.me);
-router.get("/users", roleMiddleWare(), controller.getUsers);
+router.get("/getUsers", controller.getUsers);
 
 module.exports = router;

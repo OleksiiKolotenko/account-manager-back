@@ -16,10 +16,6 @@ module.exports = function (roles) {
         return res.status(403).json({ message: "You don't have permission" });
       }
 
-      // const userId = ``
-
-      // req.userId = userId
-
       next();
     } catch (event) {
       console.log(event);

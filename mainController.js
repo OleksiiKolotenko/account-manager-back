@@ -131,6 +131,7 @@ class mainController {
   async getProfiles(req, res) {
     try {
       const userId = req.params.id || req.userId;
+
       const profiles = await Profile.find({ user_id: userId });
       res.json(profiles);
     } catch (event) {
@@ -141,6 +142,31 @@ class mainController {
     try {
       const profiles = await Profile.find();
       res.json(profiles);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+
+  async getAdult(req, res) {
+    try {
+      const profiles = await Profile.find();
+      function days(year, month, day) {
+        return year * 365 + month * 30 + day;
+      }
+      const adult = days(18, 0, 0);
+      const adults = profiles.filter((profile) => {
+        const date = new Date(profile.birthdate);
+        const now = new Date();
+        if (
+          days(now.getFullYear(), now.getMonth(), now.getDate()) -
+            days(date.getFullYear(), date.getMonth(), date.getDate()) >=
+          adult
+        ) {
+          return profile;
+        }
+        return false;
+      });
+      res.json(adults);
     } catch (event) {
       console.log(event);
     }
