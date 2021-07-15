@@ -39,6 +39,8 @@ router.post("/profileLoad", controller.profileLoad);
 router.get("/getProfiles/:id", controller.getProfiles);
 router.get("/getAllProfiles/", controller.getAllProfiles);
 router.get("/me", controller.me);
+router.delete("/deleteProfile/:id", controller.deleteProfile);
+router.patch("/editProfile/:id", controller.editProfile);
 router.get("/getUsers", controller.getUsers);
 
 module.exports = router;

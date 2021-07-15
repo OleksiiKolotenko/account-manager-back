@@ -171,6 +171,40 @@ class mainController {
       console.log(event);
     }
   }
+  async editProfile(req, res) {
+    try {
+      const profileId = req.params.id;
+      const updatedProfile = await Profile.updateOne(
+        { _id: profileId },
+        {
+          $set: {
+            name: req.body.name,
+            gender: req.body.gender,
+            birthdate: req.body.birthdate,
+            city: req.body.city,
+          },
+        }
+      );
+      res.json(updatedProfile);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+
+  async deleteProfile(req, res) {
+    try {
+      const profileId = req.params.id;
+      await Profile.findByIdAndDelete(profileId, (error) => {
+        if (error) {
+          res.status(404).send("Error");
+        } else {
+          res.status(204).send("Success");
+        }
+      });
+    } catch (event) {
+      console.log(event);
+    }
+  }
 }
 
 module.exports = new mainController();
