@@ -1,6 +1,5 @@
 const Role = require("./models/Role");
 const User = require("./models/User");
-const Users = require("./models/Users");
 const Profile = require("./models/Profiles");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
