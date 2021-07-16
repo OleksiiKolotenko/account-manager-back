@@ -1,5 +1,6 @@
 const Role = require("./models/Role");
 const User = require("./models/User");
+const Users = require("./models/Users");
 const Profile = require("./models/Profiles");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -105,7 +106,14 @@ class mainController {
   async getUsers(req, res) {
     try {
       const users = await User.find();
-      res.json(users);
+      res.json(
+        users.map((u) => ({
+          user_id: u._id,
+          username: u.username,
+          email: u.email,
+          roles: u.roles,
+        }))
+      );
     } catch (event) {
       console.log(event);
     }
@@ -131,13 +139,23 @@ class mainController {
   async getProfiles(req, res) {
     try {
       const userId = req.params.id || req.userId;
-
       const profiles = await Profile.find({ user_id: userId });
       res.json(profiles);
     } catch (event) {
       console.log(event);
     }
   }
+
+  async getOtherProfiles(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const profiles = await Profile.find({ user_id: userId });
+      res.json(profiles);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+
   async getAllProfiles(req, res) {
     try {
       const profiles = await Profile.find();

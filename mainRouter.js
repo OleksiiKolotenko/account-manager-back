@@ -33,14 +33,14 @@ router.post(
   ],
   controller.login
 );
-
-router.get("/adult", controller.getAdult);
+router.get("/me", controller.me);
 router.post("/profileLoad", controller.profileLoad);
 router.get("/getProfiles/:id", controller.getProfiles);
+router.get("/getOtherProfiles/:id", controller.getOtherProfiles);
 router.get("/getAllProfiles/", controller.getAllProfiles);
-router.get("/me", controller.me);
-router.delete("/deleteProfile/:id", controller.deleteProfile);
+router.get("/adult", controller.getAdult);
 router.patch("/editProfile/:id", controller.editProfile);
+router.delete("/deleteProfile/:id", controller.deleteProfile);
 router.get("/getUsers", controller.getUsers);
 
 module.exports = router;
