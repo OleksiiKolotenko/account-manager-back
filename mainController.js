@@ -117,6 +117,23 @@ class mainController {
       console.log(event);
     }
   }
+
+  async getChosenUser(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const user = [await User.findById(userId)];
+      res.json(
+        user.map((u) => ({
+          user_id: u._id,
+          username: u.username,
+          email: u.email,
+          roles: u.roles,
+        }))
+      );
+    } catch (event) {
+      console.log(event);
+    }
+  }
   async profileLoad(req, res) {
     try {
       const token = req.get("token");
@@ -128,6 +145,23 @@ class mainController {
         birthdate,
         city,
         user_id: user.id,
+      });
+      await profile.save();
+      return res.json(profile);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+  async profileAdminLoad(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const { name, gender, birthdate, city, user_id } = req.body;
+      const profile = new Profile({
+        name,
+        gender,
+        birthdate,
+        city,
+        user_id: userId,
       });
       await profile.save();
       return res.json(profile);
@@ -203,6 +237,25 @@ class mainController {
         }
       );
       res.json(updatedProfile);
+    } catch (event) {
+      console.log(event);
+    }
+  }
+
+  async editUser(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const updatedUser = await User.updateOne(
+        { _id: userId },
+        {
+          $set: {
+            username: req.body.username,
+            email: req.body.email,
+            roles: req.body.roles,
+          },
+        }
+      );
+      res.json(updatedUser);
     } catch (event) {
       console.log(event);
     }

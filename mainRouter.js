@@ -35,12 +35,15 @@ router.post(
 );
 router.get("/me", controller.me);
 router.post("/profileLoad", controller.profileLoad);
+router.post("/profileAdminLoad/:id", controller.profileAdminLoad);
 router.get("/getProfiles/:id", controller.getProfiles);
 router.get("/getOtherProfiles/:id", controller.getOtherProfiles);
 router.get("/getAllProfiles/", controller.getAllProfiles);
 router.get("/adult", controller.getAdult);
 router.patch("/editProfile/:id", controller.editProfile);
+router.patch("/editUser/:id", controller.editUser);
 router.delete("/deleteProfile/:id", controller.deleteProfile);
 router.get("/getUsers", controller.getUsers);
+router.get("/getChosenUser/:id", controller.getChosenUser);
 
 module.exports = router;
