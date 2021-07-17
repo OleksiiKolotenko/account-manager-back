@@ -185,6 +185,24 @@ class mainController {
     }
   }
 
+  async deleteAllProfiles(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      const profiles = await Profile.deleteMany(
+        { user_id: userId },
+        (error) => {
+          if (error) {
+            res.status(404).send("Error");
+          } else {
+            res.status(204).send("Success");
+          }
+        }
+      );
+    } catch (event) {
+      console.log(event);
+    }
+  }
+
   async getAdult(req, res) {
     try {
       const profiles = await Profile.find();
@@ -252,6 +270,20 @@ class mainController {
     try {
       const profileId = req.params.id;
       await Profile.findByIdAndDelete(profileId, (error) => {
+        if (error) {
+          res.status(404).send("Error");
+        } else {
+          res.status(204).send("Success");
+        }
+      });
+    } catch (event) {
+      console.log(event);
+    }
+  }
+  async deleteUser(req, res) {
+    try {
+      const userId = req.params.id || req.userId;
+      await User.findByIdAndDelete(userId, (error) => {
         if (error) {
           res.status(404).send("Error");
         } else {

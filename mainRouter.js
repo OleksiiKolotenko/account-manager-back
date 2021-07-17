@@ -39,10 +39,12 @@ router.post("/profileAdminLoad/:id", controller.profileAdminLoad);
 router.get("/getProfiles/:id", controller.getProfiles);
 router.get("/getOtherProfiles/:id", controller.getOtherProfiles);
 router.get("/getAllProfiles/", controller.getAllProfiles);
+router.delete("/deleteAllProfiles/:id", controller.deleteAllProfiles);
 router.get("/adult", controller.getAdult);
 router.patch("/editProfile/:id", controller.editProfile);
 router.patch("/editUser/:id", controller.editUser);
 router.delete("/deleteProfile/:id", controller.deleteProfile);
+router.delete("/deleteUser/:id", controller.deleteUser);
 router.get("/getUsers", controller.getUsers);
 router.get("/getChosenUser/:id", controller.getChosenUser);
 
