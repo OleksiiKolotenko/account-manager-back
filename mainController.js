@@ -58,6 +58,7 @@ class mainController {
         password: hashPassword,
         roles: userRole.value,
       });
+
       await user.save((err, user) => {
         const id = user._id;
         return res.json({
@@ -105,14 +106,7 @@ class mainController {
   async getUsers(req, res) {
     try {
       const users = await User.find();
-      res.json(
-        users.map((u) => ({
-          user_id: u._id,
-          username: u.username,
-          email: u.email,
-          roles: u.roles,
-        }))
-      );
+      res.json(users);
     } catch (event) {
       console.log(event);
     }
@@ -121,15 +115,8 @@ class mainController {
   async getChosenUser(req, res) {
     try {
       const userId = req.params.id || req.userId;
-      const user = [await User.findById(userId)];
-      res.json(
-        user.map((u) => ({
-          user_id: u._id,
-          username: u.username,
-          email: u.email,
-          roles: u.roles,
-        }))
-      );
+      const user = await User.findById(userId);
+      res.json(user);
     } catch (event) {
       console.log(event);
     }

@@ -7,4 +7,11 @@ const User = new Schema({
   roles: { type: String, ref: "Role" },
 });
 
+User.set("toJSON", {
+  transform(_, obj) {
+    delete obj.password;
+    return obj;
+  },
+});
+
 module.exports = model("User", User);
