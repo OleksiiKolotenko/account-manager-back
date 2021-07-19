@@ -13,7 +13,7 @@ const generateAccessToken = (email, username, roles, _id) => {
     roles,
     id: _id,
   };
-  return jwt.sign(payload, secret, { expiresIn: "24h" });
+  return jwt.sign(payload, secret, { expiresIn: "30d" });
 };
 
 class mainController {
